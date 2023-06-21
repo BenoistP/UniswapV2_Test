@@ -1,0 +1,19 @@
+{
+  "name": "uniswapv2_test",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "app": "node app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@uniswap/sdk": "^3.0.3",
+    "dotenv": "^16.3.1",
+    "ethers": "^6.6.0",
+    "install": "^0.13.0"
+  }
+}
