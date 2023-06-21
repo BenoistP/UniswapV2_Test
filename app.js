@@ -117,12 +117,17 @@ const init = async () => {
     console.error(msg)
   }
 
- const dai = await Fetcher.fetchTokenData(chainId, daitokenAddress);
  
  // GET WETH ADDRESS
  const weth = WETH[chainId];
+console.debug(`weth =`)
+console.dir(weth)
 
- 
+const dai = await Fetcher.fetchTokenData(chainId, daitokenAddress);
+console.debug(`dai =`)
+console.dir(dai)
+
+
  const pair = await Fetcher.fetchPairData(dai, weth);
  const route = new Route([pair], weth);
  const trade = new Trade(route, new TokenAmount(weth, '100000000000000000'), TradeType.EXACT_INPUT);
