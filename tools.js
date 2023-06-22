@@ -2,7 +2,11 @@
 // .env
 require("dotenv").config()
 
-const { ChainId } = require('@uniswap/sdk');
+const { ChainId: UniswapChainId, Token: UniswapToken } = require('@uniswap/sdk');
+// const { ChainId: UniswapChainId, Token: UniswapToken
+//   //, WETH: UniswapWETH
+//   } = require('@uniswap/sdk-core'); 
+
 
 // Chain names to use in .env: e.g. CHAIN_NAME=ETHEREUM_MAINNET
 const CHAIN_ETHEREUM_MAINNET = "ETHEREUM_MAINNET"
@@ -10,8 +14,8 @@ const CHAIN_ETHEREUM_TESTNET_SEPOLIA = "ETHEREUM_TESTNET_SEPOLIA"
 const CHAIN_ETHEREUM_TESTNET_GOERLI = "ETHEREUM_TESTNET_GOERLI"
 const CHAIN_POLYGON_TESTNET_POLYGON_MUMBAI = "POLYGON_TESTNET_MUMBAI"
 
-const CHAINID_ETH_MAINNET = ChainId.MAINNET;
-const CHAINID_ETH_TEST_GOERLI = ChainId.GÖRLI;
+const CHAINID_ETH_MAINNET = UniswapChainId.MAINNET;
+const CHAINID_ETH_TEST_GOERLI = UniswapChainId.GÖRLI;
 const CHAINID_ETH_TEST_SEPOLIA = 11155111; // 11155111(0xaa36a7)
 const CHAINID_POLYGON_TEST_MUMBAI = 80001; // 80001(0x13881)
 
