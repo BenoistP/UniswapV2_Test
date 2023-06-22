@@ -2,10 +2,11 @@
 // .env
 require("dotenv").config()
 
-const { ChainId: UniswapChainId, Token: UniswapToken } = require('@uniswap/sdk');
+const { ChainId: UniswapChainId, Token: UniswapToken, WETH: UniswapWETH } = require('@uniswap/sdk');
 // const { ChainId: UniswapChainId, Token: UniswapToken
 //   //, WETH: UniswapWETH
 //   } = require('@uniswap/sdk-core'); 
+const ethers = require('ethers');
 
 
 // Chain names to use in .env: e.g. CHAIN_NAME=ETHEREUM_MAINNET
@@ -49,8 +50,8 @@ const getChainName = () => {
 }
 
 
-const getChainId = (chainName) => {
-  switch (chainName) {
+const getChainId = (CHAIN_ID) => {
+  switch (CHAIN_ID) {
     case CHAIN_ETHEREUM_MAINNET:
       return CHAINID_ETH_MAINNET
     case CHAIN_ETHEREUM_TESTNET_SEPOLIA:
@@ -64,8 +65,8 @@ const getChainId = (chainName) => {
   }
 }
 
-const getRpcUrl = (chainId) => {
-  switch (chainId) {
+const getRpcUrl = (CHAIN_ID) => {
+  switch (CHAIN_ID) {
     case CHAINID_ETH_MAINNET:
       return process.env.RPC_ETHEREUM_MAINNET
     case CHAINID_ETH_TEST_SEPOLIA:
@@ -79,8 +80,8 @@ const getRpcUrl = (chainId) => {
   }
 }
 
-const getDaiTokenAddress = (chainId) => {
-  switch (chainId) {
+const getDaiTokenAddress = (CHAIN_ID) => {
+  switch (CHAIN_ID) {
     case CHAINID_ETH_MAINNET:
       return daitokenAddress_MAINNET
     case CHAINID_ETH_TEST_SEPOLIA:
@@ -94,8 +95,8 @@ const getDaiTokenAddress = (chainId) => {
   }
 }
 
-const getWethToken = (chainId) => {
-  switch (chainId) {
+const getWethToken = (CHAIN_ID) => {
+  switch (CHAIN_ID) {
     case CHAINID_ETH_MAINNET:
       return UniswapWETH[CHAINID_ETH_MAINNET];
     case CHAINID_ETH_TEST_SEPOLIA:
@@ -109,9 +110,40 @@ const getWethToken = (chainId) => {
   }
 }
 
+const getRpcProvider = (CHAIN_ID) => {
+  /*
+  switch (chainId) {
+    case CHAINID_ETH_MAINNET:
+      // return new ethers.providers.JsonRpcProvider(process.env.RPC_ETHEREUM_MAINNET);
+      // return new ethers.providers.getDefaultProvider(process.env.RPC_ETHEREUM_MAINNET);
+      return new ethers.getDefaultProvider(process.env.RPC_ETHEREUM_MAINNET);
+    case CHAINID_ETH_TEST_SEPOLIA:
+      // return new ethers.providers.JsonRpcProvider(process.env.RPC_ETHEREUM_TESTNET_SEPOLIA);
+      return new ethers.JsonRpcProvider(process.env.RPC_ETHEREUM_TESTNET_SEPOLIA);
+    case CHAINID_ETH_TEST_GOERLI:
+      // return new ethers.providers.JsonRpcProvider(process.env.RPC_ETHEREUM_TESTNET_GOERLI);
+      return new ethers.JsonRpcProvider(process.env.RPC_ETHEREUM_TESTNET_GOERLI);
+    case CHAINID_POLYGON_TEST_MUMBAI:
+      // return new ethers.providers.JsonRpcProvider(process.env.RPC_POLYGON_TESTNET_MUMBAI);
+      return new ethers.JsonRpcProvider(process.env.RPC_POLYGON_TESTNET_MUMBAI);
+    default:
+      return null
+  }
+  */
+  const RPC_URL = getRpcUrl(CHAIN_ID)
+  if (RPC_URL) {
+    console.log("Using RPC_URL: ", RPC_URL)
+    return new ethers.providers.JsonRpcProvider(RPC_URL);
+  }
+  // Use default provider, if any
+  console.log("Using default provider")
+  return new ethers.providers.getDefaultProvider(process.env.RPC_ETHEREUM_MAINNET);
+  
+}
 
 exports.getChainName = getChainName
 exports.getChainId = getChainId
 exports.getRpcUrl = getRpcUrl
 exports.getDaiTokenAddress = getDaiTokenAddress
 exports.getWethToken = getWethToken
+exports.getRpcProvider = getRpcProvider

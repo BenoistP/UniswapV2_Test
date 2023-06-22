@@ -5,7 +5,7 @@ require("dotenv").config()
 const { /* ChainId, */ Fetcher, WETH, Route, Trade, TokenAmount, TradeType, Percent } = require('@uniswap/sdk');
 const ethers = require('ethers');
 
-const { getChainName, getChainId, getRpcUrl, getDaiTokenAddress, getWethToken } = require('./tools.js');
+const { getChainName, getChainId, /* getRpcUrl, */ getDaiTokenAddress, getWethToken, getRpcProvider } = require('./tools.js');
 
 
 
@@ -21,8 +21,8 @@ const init = async () => {
   const daitokenAddress = getDaiTokenAddress(CHAIN_ID);
   console.debug(`daitokenAddress = "${daitokenAddress}"`)
 
-  const RPC_URL = getRpcUrl(CHAIN_ID)
-  console.debug(`RPC_URL = "${RPC_URL}"`)
+  // const RPC_URL = getRpcUrl(CHAIN_ID)
+  // console.debug(`RPC_URL = "${RPC_URL}"`)
 
   const PRIVATE_KEY = process.env.PRIVATE_KEY
   if (PRIVATE_KEY) {
@@ -32,7 +32,7 @@ const init = async () => {
     console.error(msg)
   }
 
- const RPC_PROVIDER = new ethers.providers.JsonRpcProvider(RPC_URL); // v5
+//  const RPC_PROVIDER = new ethers.providers.JsonRpcProvider(RPC_URL); // v5
 // https://docs.ethers.org/v6/migrating/#migrate-providers
 // const RPC_PROVIDER = new ethers.JsonRpcProvider(RPC_URL); // v6
 
@@ -40,6 +40,7 @@ const init = async () => {
 // 	infura: RPC_URL
 // }); // utilisation du provider infura pour effectuer une transaction  
 
+const RPC_PROVIDER = getRpcProvider(CHAIN_ID);
 
  // GET WETH
  const weth = getWethToken(CHAIN_ID);
@@ -47,7 +48,7 @@ console.debug(`weth =`)
 console.dir(weth)
 
 // static fetchTokenData(chainId: ChainId, address: string, provider?: import("@ethersproject/providers").BaseProvider, symbol?: string, name?: string): Promise<Token>;
-const dai = await Fetcher.fetchTokenData( CHAIN_ID, daitokenAddress, RPC_PROVIDER);
+const dai = await Fetcher.fetchTokenData( CHAIN_ID, daitokenAddress/* , RPC_PROVIDER */);
 console.debug(`dai =`)
 console.dir(dai)
 
