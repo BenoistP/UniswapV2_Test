@@ -2,112 +2,35 @@
 // .env
 require("dotenv").config()
 
-const { /* ChainId, */ Fetcher, WETH, Route, Trade, TokenAmount, TradeType, Percent } = require('@uniswap/sdk');
+// const { ChainId, WETH, Fetcher, Route, Trade, TokenAmount, TradeType, Percent } = require('@uniswap/sdk');
+ 
+const { Route, Trade } =
+ require('@uniswap/v2-sdk'); 
+
+//  const { ChainId: UniswapChainId, TradeType, Percent } =
+//  require('@uniswap/sdk-core'); 
+
+//  const { Fetcher, TokenAmount,  } =
+//  require('@uniswap/sdk-core'); 
+
+
 const ethers = require('ethers');
+// const { getChainName, getChainId, getRpcUrl, getDaiTokenAddress, /* getWethTokenAddress, */ getWethToken } = require('./tools.js');
 
-const { getChainName,getChainId,getRpcUrl,getDaiTokenAddress } = require('./tools.js');
+const { getChainName, getChainId, getDaiTokenAddress,
+  // wethtoken_ETH_TEST_SEPOLIA,
+  // wethtoken_ETH_TEST_GOERLI,
+  // wethtoken_ETH_MAINNET,
+  getDaiToken,
+  getWethToken,
+  getPair,
+} = require('./tools2.js');
 
-
-
-/*
-const CHAINID_ETH_MAINNET = ChainId.MAINNET;
-const CHAINID_ETH_TEST_GOERLI = ChainId.GÖRLI;
-const CHAINID_ETH_TEST_SEPOLIA = 11155111; // 11155111(0xaa36a7)
-const CHAINID_POLYGON_TEST_MUMBAI = 80001; // 80001(0x13881)
-
-
-const daitokenAddress_MAINNET = '0x6B175474E89094C44Da98b954EedeAC495271d0F'; // DAI address mainnet
-const daitokenAddress_ETH_TEST_SEPOLIA = '0x3e622317f8C93f7328350cF0B56d9eD4C620C5d6'; // DAI address sepolia
-const daitokenAddress_ETH_TEST_GOERLI = '0x11fE4B6AE13d2a6055C8D9cF65c55bac32B5d844'; // DAI address goerli
-const daitokenAddress_POLYGON_TEST_MUMBAI = '0x001B3B4d0F3714Ca98ba10F6042DaEbF0B1B7b6F'; // DAI address mumbai
-
-const CHAIN_ETHEREUM_MAINNET = "ETHEREUM_MAINNET"
-const CHAIN_ETHEREUM_TESTNET_SEPOLIA = "ETHEREUM_TESTNET_SEPOLIA"
-const CHAIN_ETHEREUM_TESTNET_GOERLI = "ETHEREUM_TESTNET_GOERLI"
-const CHAIN_POLYGON_TESTNET_POLYGON_MUMBAI = "POLYGON_TESTNET_MUMBAI"
-*/
-/* 
-const CHAIN_NAME = process.env.CHAIN_NAME
-console.debug(`CHAIN_NAME = "${CHAIN_NAME}"`)
-
-const CHAIN_ETHEREUM_MAINNET_RPC = process.env.RPC_ETHEREUM_MAINNET
-console.debug(`CHAIN_ETHEREUM_MAINNET_RPC = "${CHAIN_ETHEREUM_MAINNET_RPC}"`)
-const CHAIN_ETHEREUM_TESTNET_SEPOLIA_RPC = process.env.RPC_ETHEREUM_TESTNET_SEPOLIA
-console.debug(`CHAIN_ETHEREUM_TESTNET_SEPOLIA_RPC = "${CHAIN_ETHEREUM_TESTNET_SEPOLIA_RPC}"`)
-const CHAIN_ETHEREUM_TESTNET_GOERLI_RPC = process.env.RPC_ETHEREUM_TESTNET_GOERLI
-console.debug(`CHAIN_ETHEREUM_TESTNET_GOERLI_RPC = "${CHAIN_ETHEREUM_TESTNET_GOERLI_RPC}"`)
-const CHAIN_POLYGON_TESTNET_POLYGON_MUMBAI_RPC = process.env.RPC_POLYGON_TESTNET_POLYGON_MUMBAI
-console.debug(`CHAIN_POLYGON_TESTNET_POLYGON_MUMBAI_RPC = "${CHAIN_POLYGON_TESTNET_POLYGON_MUMBAI_RPC}"`)
-
-const CHAIN_ID = getChainId(CHAIN_NAME)
-console.debug(`CHAIN_ID = "${CHAIN_ID}"`)
- */
-/*
-const getChainId = (chainName) => {
-  switch (chainName) {
-    case CHAIN_ETHEREUM_MAINNET:
-      return CHAINID_ETH_MAINNET
-    case CHAIN_ETHEREUM_TESTNET_SEPOLIA:
-      return CHAINID_SEPOLIA
-    case CHAIN_ETHEREUM_TESTNET_GOERLI:
-      return CHAINID_ETH_TEST_GOERLI
-    case CHAIN_POLYGON_TESTNET_POLYGON_MUMBAI:
-      return CHAINID_POLYGON_TEST_MUMBAI
-    default:
-      return -1
-  }
-}
-
-const getRpcUrl = (chainName) => {
-  switch (chainName) {
-    case CHAIN_ETHEREUM_MAINNET:
-      return CHAIN_ETHEREUM_MAINNET_RPC
-    case CHAIN_ETHEREUM_TESTNET_SEPOLIA:
-      return CHAIN_ETHEREUM_TESTNET_SEPOLIA_RPC
-    case CHAIN_ETHEREUM_TESTNET_GOERLI:
-      return CHAIN_ETHEREUM_TESTNET_GOERLI_RPC
-    case CHAIN_POLYGON_TESTNET_POLYGON_MUMBAI:
-      return CHAIN_POLYGON_TESTNET_POLYGON_MUMBAI_RPC
-    default:
-      return ""
-  }
-}
-
-const getDaiTokenAddress = (chainName) => {
-  switch (chainName) {
-    case CHAIN_ETHEREUM_MAINNET:
-      return daitokenAddress_MAINNET
-    case CHAIN_ETHEREUM_TESTNET_SEPOLIA:
-      return daitokenAddress_ETH_TEST_SEPOLIA
-    case CHAIN_ETHEREUM_TESTNET_GOERLI:
-      return daitokenAddress_ETH_TEST_GOERLI
-    case CHAIN_POLYGON_TESTNET_POLYGON_MUMBAI:
-      return daitokenAddress_POLYGON_TEST_MUMBAI
-    default:
-      return -1
-  }
-}
-*/
-
+// const { ChainId: UniswapChainId } = require('@uniswap/sdk-core'); 
 
 
 const init = async () => {
 
-
-  const CHAIN_NAME = getChainName()
-  console.debug(`CHAIN_NAME = "${CHAIN_NAME}"`)
-  
-  const CHAIN_ID = getChainId(CHAIN_NAME)
-  console.debug(`CHAIN_ID = "${CHAIN_ID}"`)
-
-  const chainId = getChainId(CHAIN_NAME);
-  console.debug(`chainId = "${chainId}"`)
-
-  const daitokenAddress = getDaiTokenAddress(CHAIN_NAME);
-  console.debug(`daitokenAddress = "${daitokenAddress}"`)
-
-  const RPC_URL = getRpcUrl(CHAIN_NAME)
-  console.debug(`RPC_URL = "${RPC_URL}"`)
 
   const PRIVATE_KEY = process.env.PRIVATE_KEY
   if (PRIVATE_KEY) {
@@ -117,29 +40,74 @@ const init = async () => {
     console.error(msg)
   }
 
- const dai = await Fetcher.fetchTokenData(chainId, daitokenAddress);
- 
- // GET WETH ADDRESS
- const weth = WETH[chainId];
+  const CHAIN_NAME = getChainName()
+  console.debug(`CHAIN_NAME = "${CHAIN_NAME}"`)
+  
+  const CHAIN_ID = getChainId(CHAIN_NAME)
+  console.debug(`CHAIN_ID = ${CHAIN_ID}`)
 
- 
- const pair = await Fetcher.fetchPairData(dai, weth);
- const route = new Route([pair], weth);
- const trade = new Trade(route, new TokenAmount(weth, '100000000000000000'), TradeType.EXACT_INPUT);
+  const daiTokenAddress = getDaiTokenAddress(CHAIN_NAME);
+  console.debug(`daiTokenAddress = "${daiTokenAddress}"`)
+
+  const daiToken = getDaiToken(CHAIN_NAME)
+  console.debug(`daiToken =`)
+  console.dir(daiToken)
+
+  const wethtoken = getWethToken(CHAIN_NAME)
+  console.debug(`wethtoken =`)
+  console.dir(wethtoken)
+
+  const pairDaiWeth = await getPair(daiTokenAddress, wethtoken)
+
+  // console.debug(`UniswapChainId.MAINNET = ${UniswapChainId.MAINNET}`)
+
+
+/*
+//  // GET WETH ADDRESS
+//  const wethTokenAddress = getWethTokenAddress(CHAIN_NAME);
+//  console.debug(`wethTokenAddress = "${wethTokenAddress}"`)
+
+ // GET WETH TOKEN
+ const wethToken = getWethToken(CHAIN_NAME)
+ console.debug(`wethToken =`)
+ console.dir(wethToken)
+
+
+ const RPC_URL = getRpcUrl(CHAIN_NAME)
+  console.debug(`RPC_URL = "${RPC_URL}"`)
+
+
+//  const dai = await Fetcher.fetchTokenData(CHAIN_ID, daiTokenAddress);
+// const dai = await Fetcher.fetchTokenData(UniswapChainId.MAINNET, daiTokenAddress);
+const dai = await Fetcher.fetchTokenData(UniswapChainId.MAINNET, daiTokenAddress);
+// const dai2 = await Fetcher.fetchTokenData(CHAIN_ID, daiTokenAddress);
+
+ console.debug(`dai =`)
+ console.dir(dai)
+
+// console.debug(`dai2 =`)
+// console.dir(dai2)
+*/
+//process.exit(0)
+
+// ----------------
+
+//  const pair = await Fetcher.fetchPairData(dai, wethToken);
+ const route = new Route([pair], wethToken);
+ const trade = new Trade(route, new TokenAmount(wethToken, '100000000000000000'), TradeType.EXACT_INPUT);
  console.log(route.midPrice.toSignificant(6));
  console.log(route.midPrice.invert().toSignificant(6));
  console.log(trade.executionPrice.toSignificant(6));
  console.log(trade.nextMidPrice.toSignificant(6));
  
 
-process.exit(0)
 
 // ----------------
 
 const slippageTolerance = new Percent('50', '10000'); // tolérance prix 50 bips = 0.050%
  
 const _tokenIn = dai;
-const _tokenOut = weth;
+const _tokenOut = wethToken;
 const _fee = 500; // 0.05%
 const _recipient = "";
 const _deadline = Math.floor(Date.now() / 1000) + 60 * 20; // le délai après lequel le trade n’est plus valable 
