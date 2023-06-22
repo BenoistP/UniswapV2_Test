@@ -5,7 +5,7 @@ require("dotenv").config()
 const { /* ChainId, */ Fetcher, WETH, Route, Trade, TokenAmount, TradeType, Percent } = require('@uniswap/sdk');
 const ethers = require('ethers');
 
-const { getChainName,getChainId,getRpcUrl,getDaiTokenAddress } = require('./tools.js');
+const { getChainName, getChainId, getRpcUrl, getDaiTokenAddress, getWethToken } = require('./tools.js');
 
 
 
@@ -18,13 +18,10 @@ const init = async () => {
   const CHAIN_ID = getChainId(CHAIN_NAME)
   console.debug(`CHAIN_ID = "${CHAIN_ID}"`)
 
-  const chainId = getChainId(CHAIN_NAME);
-  console.debug(`chainId = "${chainId}"`)
-
-  const daitokenAddress = getDaiTokenAddress(CHAIN_NAME);
+  const daitokenAddress = getDaiTokenAddress(CHAIN_ID);
   console.debug(`daitokenAddress = "${daitokenAddress}"`)
 
-  const RPC_URL = getRpcUrl(CHAIN_NAME)
+  const RPC_URL = getRpcUrl(CHAIN_ID)
   console.debug(`RPC_URL = "${RPC_URL}"`)
 
   const PRIVATE_KEY = process.env.PRIVATE_KEY
@@ -36,12 +33,12 @@ const init = async () => {
   }
 
  
- // GET WETH ADDRESS
- const weth = WETH[chainId];
+ // GET WETH
+ const weth = getWethToken(CHAIN_ID);
 console.debug(`weth =`)
 console.dir(weth)
 
-const dai = await Fetcher.fetchTokenData(chainId, daitokenAddress);
+const dai = await Fetcher.fetchTokenData(CHAIN_ID, daitokenAddress);
 console.debug(`dai =`)
 console.dir(dai)
 

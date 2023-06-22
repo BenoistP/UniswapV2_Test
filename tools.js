@@ -4,6 +4,11 @@ require("dotenv").config()
 
 const { ChainId } = require('@uniswap/sdk');
 
+// Chain names to use in .env: e.g. CHAIN_NAME=ETHEREUM_MAINNET
+const CHAIN_ETHEREUM_MAINNET = "ETHEREUM_MAINNET"
+const CHAIN_ETHEREUM_TESTNET_SEPOLIA = "ETHEREUM_TESTNET_SEPOLIA"
+const CHAIN_ETHEREUM_TESTNET_GOERLI = "ETHEREUM_TESTNET_GOERLI"
+const CHAIN_POLYGON_TESTNET_POLYGON_MUMBAI = "POLYGON_TESTNET_MUMBAI"
 
 const CHAINID_ETH_MAINNET = ChainId.MAINNET;
 const CHAINID_ETH_TEST_GOERLI = ChainId.GÖRLI;
@@ -35,27 +40,6 @@ const wethtoken_POLYGON_TEST_MUMBAI = new UniswapToken(
   18
 );
 
-const CHAIN_ETHEREUM_MAINNET = "ETHEREUM_MAINNET"
-const CHAIN_ETHEREUM_TESTNET_SEPOLIA = "ETHEREUM_TESTNET_SEPOLIA"
-const CHAIN_ETHEREUM_TESTNET_GOERLI = "ETHEREUM_TESTNET_GOERLI"
-const CHAIN_POLYGON_TESTNET_POLYGON_MUMBAI = "POLYGON_TESTNET_MUMBAI"
-
-const getWethToken = (chainName) => {
-  switch (chainName) {
-    case CHAIN_ETHEREUM_MAINNET:
-      return UniswapWETH[CHAINID_ETH_MAINNET];
-    case CHAIN_ETHEREUM_TESTNET_SEPOLIA:
-      return wethtoken_ETH_TEST_SEPOLIA
-    case CHAIN_ETHEREUM_TESTNET_GOERLI:
-      return UniswapWETH[CHAINID_ETH_TEST_GOERLI];
-    case CHAIN_POLYGON_TESTNET_POLYGON_MUMBAI:
-      return wethtoken_POLYGON_TEST_MUMBAI
-    default:
-      return null
-  }
-}
-
-
 const getChainName = () => {
   return process.env.CHAIN_NAME
 }
@@ -76,37 +60,54 @@ const getChainId = (chainName) => {
   }
 }
 
-const getRpcUrl = (chainName) => {
-  switch (chainName) {
-    case CHAIN_ETHEREUM_MAINNET:
+const getRpcUrl = (chainId) => {
+  switch (chainId) {
+    case CHAINID_ETH_MAINNET:
       return process.env.RPC_ETHEREUM_MAINNET
-    case CHAIN_ETHEREUM_TESTNET_SEPOLIA:
+    case CHAINID_ETH_TEST_SEPOLIA:
       return process.env.RPC_ETHEREUM_TESTNET_SEPOLIA
-    case CHAIN_ETHEREUM_TESTNET_GOERLI:
+    case CHAINID_ETH_TEST_GOERLI:
       return process.env.RPC_ETHEREUM_TESTNET_GOERLI
-    case CHAIN_POLYGON_TESTNET_POLYGON_MUMBAI:
+    case CHAINID_POLYGON_TEST_MUMBAI:
       return process.env.RPC_POLYGON_TESTNET_POLYGON_MUMBAI
     default:
       return ""
   }
 }
 
-const getDaiTokenAddress = (chainName) => {
-  switch (chainName) {
-    case CHAIN_ETHEREUM_MAINNET:
+const getDaiTokenAddress = (chainId) => {
+  switch (chainId) {
+    case CHAINID_ETH_MAINNET:
       return daitokenAddress_MAINNET
-    case CHAIN_ETHEREUM_TESTNET_SEPOLIA:
+    case CHAINID_ETH_TEST_SEPOLIA:
       return daitokenAddress_ETH_TEST_SEPOLIA
-    case CHAIN_ETHEREUM_TESTNET_GOERLI:
+    case CHAINID_ETH_TEST_GOERLI:
       return daitokenAddress_ETH_TEST_GOERLI
-    case CHAIN_POLYGON_TESTNET_POLYGON_MUMBAI:
+    case CHAINID_POLYGON_TEST_MUMBAI:
       return daitokenAddress_POLYGON_TEST_MUMBAI
     default:
       return -1
   }
 }
 
+const getWethToken = (chainId) => {
+  switch (chainId) {
+    case CHAINID_ETH_MAINNET:
+      return UniswapWETH[CHAINID_ETH_MAINNET];
+    case CHAINID_ETH_TEST_SEPOLIA:
+      return wethtoken_ETH_TEST_SEPOLIA
+    case CHAINID_ETH_TEST_GOERLI:
+      return UniswapWETH[CHAINID_ETH_TEST_GOERLI];
+    case CHAINID_POLYGON_TEST_MUMBAI:
+      return wethtoken_POLYGON_TEST_MUMBAI
+    default:
+      return null
+  }
+}
+
+
 exports.getChainName = getChainName
 exports.getChainId = getChainId
 exports.getRpcUrl = getRpcUrl
 exports.getDaiTokenAddress = getDaiTokenAddress
+exports.getWethToken = getWethToken
