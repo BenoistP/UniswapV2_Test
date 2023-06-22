@@ -32,13 +32,22 @@ const init = async () => {
     console.error(msg)
   }
 
- 
+ const RPC_PROVIDER = new ethers.providers.JsonRpcProvider(RPC_URL); // v5
+// https://docs.ethers.org/v6/migrating/#migrate-providers
+// const RPC_PROVIDER = new ethers.JsonRpcProvider(RPC_URL); // v6
+
+//  const provider = ethers. getDefaultProvider( CHAIN_ID, {
+// 	infura: RPC_URL
+// }); // utilisation du provider infura pour effectuer une transaction  
+
+
  // GET WETH
  const weth = getWethToken(CHAIN_ID);
 console.debug(`weth =`)
 console.dir(weth)
 
-const dai = await Fetcher.fetchTokenData(CHAIN_ID, daitokenAddress);
+// static fetchTokenData(chainId: ChainId, address: string, provider?: import("@ethersproject/providers").BaseProvider, symbol?: string, name?: string): Promise<Token>;
+const dai = await Fetcher.fetchTokenData( CHAIN_ID, daitokenAddress, RPC_PROVIDER);
 console.debug(`dai =`)
 console.dir(dai)
 

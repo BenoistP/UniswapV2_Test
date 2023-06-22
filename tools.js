@@ -73,7 +73,7 @@ const getRpcUrl = (chainId) => {
     case CHAINID_ETH_TEST_GOERLI:
       return process.env.RPC_ETHEREUM_TESTNET_GOERLI
     case CHAINID_POLYGON_TEST_MUMBAI:
-      return process.env.RPC_POLYGON_TESTNET_POLYGON_MUMBAI
+      return process.env.RPC_POLYGON_TESTNET_MUMBAI
     default:
       return ""
   }
