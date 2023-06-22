@@ -22,6 +22,19 @@ const wethtokenAddress_ETH_TEST_SEPOLIA = "0x7b79995e5f793A07Bc00c21412e50Ecae09
 // const wethtokenAddress_ETH_TEST_GOERLI = WETH[CHAINID_ETH_TEST_GOERLI];
 const wethtokenAddress_POLYGON_TEST_MUMBAI = "0xA6FA4fB5f76172d178d61B04b0ecd319C5d1C0aa"
 
+// constructor(chainId: ChainId, address: string, decimals: number, symbol?: string, name?: string);
+const wethtoken_ETH_TEST_SEPOLIA = new UniswapToken(
+  UniswapChainId.RINKEBY,
+  wethtokenAddress_ETH_TEST_SEPOLIA,
+  18
+);
+
+const wethtoken_POLYGON_TEST_MUMBAI = new UniswapToken(
+  CHAINID_POLYGON_TEST_MUMBAI,
+  wethtokenAddress_POLYGON_TEST_MUMBAI,
+  18
+);
+
 const CHAIN_ETHEREUM_MAINNET = "ETHEREUM_MAINNET"
 const CHAIN_ETHEREUM_TESTNET_SEPOLIA = "ETHEREUM_TESTNET_SEPOLIA"
 const CHAIN_ETHEREUM_TESTNET_GOERLI = "ETHEREUM_TESTNET_GOERLI"
